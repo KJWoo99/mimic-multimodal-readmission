@@ -1,0 +1,171 @@
+{
+  "id": 3,
+  "name": "aug-medium",
+  "parent": 1,
+  "hypothesis": "해마에서 방향이 그럴듯한 증강만 효과가 있었다. 흉부 X선은 좌우가 해부학적으로 의미가 있으므로 strong 의 좌우반전이 해로울 수 있다",
+  "change": "aug strong -> medium",
+  "config": {
+    "model": "efficientnet_b0",
+    "aug": "medium",
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.0001,
+    "batch": 64,
+    "size": 384,
+    "epochs": 40,
+    "patience": 8,
+    "freeze_epochs": 3,
+    "scheduler": "cosine",
+    "pos_weight": "auto",
+    "seed": 42,
+    "split_seed": 42
+  },
+  "result": {
+    "best_val_pr_auc": 0.31449679842527073,
+    "best_epoch": 7,
+    "epochs_run": 15,
+    "stopped_early": true,
+    "final_train_loss": 0.5102807987194795,
+    "first_train_loss": 1.0493331785385425
+  },
+  "diagnosis": "정상 수렴(정점 후 하락으로 조기종료)",
+  "history": [
+    {
+      "epoch": 1,
+      "phase": "head",
+      "train_loss": 1.0493331785385425,
+      "val_metric": 0.27934247586373373,
+      "lr": 0.001,
+      "seconds": 121.15801954269409,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "phase": "head",
+      "train_loss": 1.0450374607856456,
+      "val_metric": 0.28445434803662506,
+      "lr": 0.0007624999999999999,
+      "seconds": 119.07382369041443,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "phase": "head",
+      "train_loss": 1.0388492627021595,
+      "val_metric": 0.28246171753518556,
+      "lr": 0.0002875000000000001,
+      "seconds": 119.84558176994324,
+      "is_best": false
+    },
+    {
+      "epoch": 4,
+      "phase": "full",
+      "train_loss": 1.0476011797403677,
+      "val_metric": 0.2986475445820989,
+      "lr": 0.0001,
+      "seconds": 118.48303699493408,
+      "is_best": true
+    },
+    {
+      "epoch": 5,
+      "phase": "full",
+      "train_loss": 1.0312766470970252,
+      "val_metric": 0.31281763358013653,
+      "lr": 9.982888070577001e-05,
+      "seconds": 124.19619488716125,
+      "is_best": true
+    },
+    {
+      "epoch": 6,
+      "phase": "full",
+      "train_loss": 1.009981227073914,
+      "val_metric": 0.3066949037565168,
+      "lr": 9.931675574151616e-05,
+      "seconds": 116.88700795173645,
+      "is_best": false
+    },
+    {
+      "epoch": 7,
+      "phase": "full",
+      "train_loss": 0.9809994521813515,
+      "val_metric": 0.31449679842527073,
+      "lr": 9.846731497934121e-05,
+      "seconds": 117.62366199493408,
+      "is_best": true
+    },
+    {
+      "epoch": 8,
+      "phase": "full",
+      "train_loss": 0.9428764467055981,
+      "val_metric": 0.3097429911866919,
+      "lr": 9.72866786594015e-05,
+      "seconds": 119.39757943153381,
+      "is_best": false
+    },
+    {
+      "epoch": 9,
+      "phase": "full",
+      "train_loss": 0.8944469708662767,
+      "val_metric": 0.30252526785685796,
+      "lr": 9.578335329343644e-05,
+      "seconds": 119.45456981658936,
+      "is_best": false
+    },
+    {
+      "epoch": 10,
+      "phase": "full",
+      "train_loss": 0.8345807066330543,
+      "val_metric": 0.30075936020739424,
+      "lr": 9.396817037515644e-05,
+      "seconds": 118.11405444145203,
+      "is_best": false
+    },
+    {
+      "epoch": 11,
+      "phase": "full",
+      "train_loss": 0.7632296883142912,
+      "val_metric": 0.298175547663337,
+      "lr": 9.185420833908251e-05,
+      "seconds": 118.29635739326477,
+      "is_best": false
+    },
+    {
+      "epoch": 12,
+      "phase": "full",
+      "train_loss": 0.6937620879747929,
+      "val_metric": 0.29518450692498366,
+      "lr": 8.945669833012588e-05,
+      "seconds": 119.61912846565247,
+      "is_best": false
+    },
+    {
+      "epoch": 13,
+      "phase": "full",
+      "train_loss": 0.6263403850488174,
+      "val_metric": 0.295708567084278,
+      "lr": 8.679291446283993e-05,
+      "seconds": 123.68360233306885,
+      "is_best": false
+    },
+    {
+      "epoch": 14,
+      "phase": "full",
+      "train_loss": 0.5685776311617631,
+      "val_metric": 0.29600142855215394,
+      "lr": 8.388204936102888e-05,
+      "seconds": 122.00239443778992,
+      "is_best": false
+    },
+    {
+      "epoch": 15,
+      "phase": "full",
+      "train_loss": 0.5102807987194795,
+      "val_metric": 0.2937164844581891,
+      "lr": 8.074507587445363e-05,
+      "seconds": 120.10593223571777,
+      "is_best": false
+    }
+  ],
+  "elapsed_sec": 1818.3,
+  "note": "val 로만 평가. test 는 최종 조합 확인 때 run_phase2.py 로 1회만 본다."
+}

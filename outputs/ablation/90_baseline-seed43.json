@@ -1,0 +1,198 @@
+{
+  "id": 90,
+  "name": "baseline-seed43",
+  "parent": 1,
+  "hypothesis": "설정을 그대로 두고 시드만 바꾼다. 회차 간 차이가 어디까지 잡음인지 재는 것이 목적이다",
+  "change": "seed 42 -> 43 (설정 동일)",
+  "config": {
+    "model": "efficientnet_b0",
+    "aug": "strong",
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.0001,
+    "batch": 64,
+    "size": 384,
+    "epochs": 40,
+    "patience": 8,
+    "freeze_epochs": 3,
+    "scheduler": "cosine",
+    "pos_weight": "auto",
+    "seed": 43,
+    "split_seed": 42
+  },
+  "result": {
+    "best_val_pr_auc": 0.3127317214962565,
+    "best_epoch": 10,
+    "epochs_run": 18,
+    "stopped_early": true,
+    "final_train_loss": 0.7166090983610887,
+    "first_train_loss": 1.0507463971773783
+  },
+  "diagnosis": "정상 수렴(정점 후 하락으로 조기종료)",
+  "history": [
+    {
+      "epoch": 1,
+      "phase": "head",
+      "train_loss": 1.0507463971773783,
+      "val_metric": 0.27024346291037527,
+      "lr": 0.001,
+      "seconds": 116.60880088806152,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "phase": "head",
+      "train_loss": 1.0481076482014777,
+      "val_metric": 0.2803396027190556,
+      "lr": 0.0007624999999999999,
+      "seconds": 112.9682970046997,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "phase": "head",
+      "train_loss": 1.0440303438749068,
+      "val_metric": 0.28279179863083614,
+      "lr": 0.0002875000000000001,
+      "seconds": 115.67734360694885,
+      "is_best": true
+    },
+    {
+      "epoch": 4,
+      "phase": "full",
+      "train_loss": 1.051294143536152,
+      "val_metric": 0.2813666863985327,
+      "lr": 0.0001,
+      "seconds": 118.38146018981934,
+      "is_best": false
+    },
+    {
+      "epoch": 5,
+      "phase": "full",
+      "train_loss": 1.04242566548861,
+      "val_metric": 0.28534021613925875,
+      "lr": 9.982888070577001e-05,
+      "seconds": 117.1417064666748,
+      "is_best": true
+    },
+    {
+      "epoch": 6,
+      "phase": "full",
+      "train_loss": 1.0332388914548434,
+      "val_metric": 0.2999827526290094,
+      "lr": 9.931675574151616e-05,
+      "seconds": 119.82246732711792,
+      "is_best": true
+    },
+    {
+      "epoch": 7,
+      "phase": "full",
+      "train_loss": 1.024746338526408,
+      "val_metric": 0.29677923819551816,
+      "lr": 9.846731497934121e-05,
+      "seconds": 118.99359965324402,
+      "is_best": false
+    },
+    {
+      "epoch": 8,
+      "phase": "full",
+      "train_loss": 1.0154902707307767,
+      "val_metric": 0.29498085642332483,
+      "lr": 9.72866786594015e-05,
+      "seconds": 121.33195066452026,
+      "is_best": false
+    },
+    {
+      "epoch": 9,
+      "phase": "full",
+      "train_loss": 1.0045377485263043,
+      "val_metric": 0.31140384522037035,
+      "lr": 9.578335329343644e-05,
+      "seconds": 115.46374726295471,
+      "is_best": true
+    },
+    {
+      "epoch": 10,
+      "phase": "full",
+      "train_loss": 0.9872248395895347,
+      "val_metric": 0.3127317214962565,
+      "lr": 9.396817037515644e-05,
+      "seconds": 117.69906044006348,
+      "is_best": true
+    },
+    {
+      "epoch": 11,
+      "phase": "full",
+      "train_loss": 0.9634367722731371,
+      "val_metric": 0.3071086670662937,
+      "lr": 9.185420833908251e-05,
+      "seconds": 117.85682654380798,
+      "is_best": false
+    },
+    {
+      "epoch": 12,
+      "phase": "full",
+      "train_loss": 0.9391793439021477,
+      "val_metric": 0.31192126706693674,
+      "lr": 8.945669833012588e-05,
+      "seconds": 121.41293811798096,
+      "is_best": false
+    },
+    {
+      "epoch": 13,
+      "phase": "full",
+      "train_loss": 0.9030801773071289,
+      "val_metric": 0.30539599161555153,
+      "lr": 8.679291446283993e-05,
+      "seconds": 121.49673581123352,
+      "is_best": false
+    },
+    {
+      "epoch": 14,
+      "phase": "full",
+      "train_loss": 0.8775253648941334,
+      "val_metric": 0.3048514103906045,
+      "lr": 8.388204936102888e-05,
+      "seconds": 119.11155867576599,
+      "is_best": false
+    },
+    {
+      "epoch": 15,
+      "phase": "full",
+      "train_loss": 0.8402690963867383,
+      "val_metric": 0.3065466970110086,
+      "lr": 8.074507587445363e-05,
+      "seconds": 119.06556749343872,
+      "is_best": false
+    },
+    {
+      "epoch": 16,
+      "phase": "full",
+      "train_loss": 0.7989358995205317,
+      "val_metric": 0.3029376849788131,
+      "lr": 7.740459596896852e-05,
+      "seconds": 115.66300654411316,
+      "is_best": false
+    },
+    {
+      "epoch": 17,
+      "phase": "full",
+      "train_loss": 0.7596813966066409,
+      "val_metric": 0.30011946895485175,
+      "lr": 7.388467787883949e-05,
+      "seconds": 119.29694843292236,
+      "is_best": false
+    },
+    {
+      "epoch": 18,
+      "phase": "full",
+      "train_loss": 0.7166090983610887,
+      "val_metric": 0.29932102619855383,
+      "lr": 7.021068269456466e-05,
+      "seconds": 116.75181841850281,
+      "is_best": false
+    }
+  ],
+  "elapsed_sec": 2145.1,
+  "note": "val 로만 평가. test 는 최종 조합 확인 때 run_phase2.py 로 1회만 본다."
+}

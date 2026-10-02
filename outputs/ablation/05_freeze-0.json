@@ -1,0 +1,171 @@
+{
+  "id": 5,
+  "name": "freeze-0",
+  "parent": 1,
+  "hypothesis": "3에폭 동결이 384px 에서도 맞는 값인지 확인한다. 해상도가 커지면 저수준 특징이 달라져 처음부터 같이 학습하는 편이 나을 수 있다",
+  "change": "freeze_epochs 3 -> 0",
+  "config": {
+    "model": "efficientnet_b0",
+    "aug": "strong",
+    "lr_head": 0.001,
+    "lr_backbone": 0.0001,
+    "weight_decay": 0.0001,
+    "batch": 64,
+    "size": 384,
+    "epochs": 40,
+    "patience": 8,
+    "freeze_epochs": 0,
+    "scheduler": "cosine",
+    "pos_weight": "auto",
+    "seed": 42,
+    "split_seed": 42
+  },
+  "result": {
+    "best_val_pr_auc": 0.31801039693189104,
+    "best_epoch": 7,
+    "epochs_run": 15,
+    "stopped_early": true,
+    "final_train_loss": 0.740772640093779,
+    "first_train_loss": 1.050157436193564
+  },
+  "diagnosis": "정상 수렴(정점 후 하락으로 조기종료)",
+  "history": [
+    {
+      "epoch": 1,
+      "phase": "full",
+      "train_loss": 1.050157436193564,
+      "val_metric": 0.3059284736601169,
+      "lr": 0.0001,
+      "seconds": 120.71916198730469,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "phase": "full",
+      "train_loss": 1.0438988896516652,
+      "val_metric": 0.2938057300116988,
+      "lr": 9.98535733523236e-05,
+      "seconds": 118.83680701255798,
+      "is_best": false
+    },
+    {
+      "epoch": 3,
+      "phase": "full",
+      "train_loss": 1.0385985593001048,
+      "val_metric": 0.30263088188457477,
+      "lr": 9.941519617826906e-05,
+      "seconds": 115.33702087402344,
+      "is_best": false
+    },
+    {
+      "epoch": 4,
+      "phase": "full",
+      "train_loss": 1.0299915665235275,
+      "val_metric": 0.3090096198477965,
+      "lr": 9.868757121888964e-05,
+      "seconds": 115.55859446525574,
+      "is_best": true
+    },
+    {
+      "epoch": 5,
+      "phase": "full",
+      "train_loss": 1.0197105134144808,
+      "val_metric": 0.30332101852717497,
+      "lr": 9.76751845240198e-05,
+      "seconds": 118.47679591178894,
+      "is_best": false
+    },
+    {
+      "epoch": 6,
+      "phase": "full",
+      "train_loss": 1.0097392183083755,
+      "val_metric": 0.3083100529681503,
+      "lr": 9.638427779428613e-05,
+      "seconds": 119.54511141777039,
+      "is_best": false
+    },
+    {
+      "epoch": 7,
+      "phase": "full",
+      "train_loss": 0.9916859979812915,
+      "val_metric": 0.31801039693189104,
+      "lr": 9.482280989894748e-05,
+      "seconds": 120.17592740058899,
+      "is_best": true
+    },
+    {
+      "epoch": 8,
+      "phase": "full",
+      "train_loss": 0.97550367804674,
+      "val_metric": 0.3020828859432681,
+      "lr": 9.300040780681938e-05,
+      "seconds": 121.26192498207092,
+      "is_best": false
+    },
+    {
+      "epoch": 9,
+      "phase": "full",
+      "train_loss": 0.9541282990039923,
+      "val_metric": 0.3060288259310707,
+      "lr": 9.092830723281e-05,
+      "seconds": 121.84315371513367,
+      "is_best": false
+    },
+    {
+      "epoch": 10,
+      "phase": "full",
+      "train_loss": 0.9205606802915915,
+      "val_metric": 0.3048817229163352,
+      "lr": 8.861928336600148e-05,
+      "seconds": 125.65619277954102,
+      "is_best": false
+    },
+    {
+      "epoch": 11,
+      "phase": "full",
+      "train_loss": 0.8924891846302229,
+      "val_metric": 0.3047600480885275,
+      "lr": 8.608757210636101e-05,
+      "seconds": 125.70952415466309,
+      "is_best": false
+    },
+    {
+      "epoch": 12,
+      "phase": "full",
+      "train_loss": 0.8663593857716292,
+      "val_metric": 0.3014959790497044,
+      "lr": 8.334878229568373e-05,
+      "seconds": 125.75640964508057,
+      "is_best": false
+    },
+    {
+      "epoch": 13,
+      "phase": "full",
+      "train_loss": 0.825687484557812,
+      "val_metric": 0.29911275141500765,
+      "lr": 8.041979948389248e-05,
+      "seconds": 122.33633470535278,
+      "is_best": false
+    },
+    {
+      "epoch": 14,
+      "phase": "full",
+      "train_loss": 0.7844961704351963,
+      "val_metric": 0.29114096063308104,
+      "lr": 7.731868182400758e-05,
+      "seconds": 125.31112885475159,
+      "is_best": false
+    },
+    {
+      "epoch": 15,
+      "phase": "full",
+      "train_loss": 0.740772640093779,
+      "val_metric": 0.30023733496290905,
+      "lr": 7.406454873762848e-05,
+      "seconds": 122.67492747306824,
+      "is_best": false
+    }
+  ],
+  "elapsed_sec": 1839.8,
+  "note": "val 로만 평가. test 는 최종 조합 확인 때 run_phase2.py 로 1회만 본다."
+}

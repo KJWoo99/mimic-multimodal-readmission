@@ -1,0 +1,207 @@
+{
+  "id": 4,
+  "name": "lr-backbone-3e-4",
+  "parent": 1,
+  "hypothesis": "6에폭에서 정점을 찍고 내려온다. 백본 학습률이 낮아 헤드만 맞추고 끝난 것일 수 있다",
+  "change": "lr_backbone 1e-4 -> 3e-4",
+  "config": {
+    "model": "efficientnet_b0",
+    "aug": "strong",
+    "lr_head": 0.001,
+    "lr_backbone": 0.0003,
+    "weight_decay": 0.0001,
+    "batch": 64,
+    "size": 384,
+    "epochs": 40,
+    "patience": 8,
+    "freeze_epochs": 3,
+    "scheduler": "cosine",
+    "pos_weight": "auto",
+    "seed": 42,
+    "split_seed": 42
+  },
+  "result": {
+    "best_val_pr_auc": 0.31249933174369193,
+    "best_epoch": 11,
+    "epochs_run": 19,
+    "stopped_early": true,
+    "final_train_loss": 0.6802826782067617,
+    "first_train_loss": 1.0508172027575664
+  },
+  "diagnosis": "정상 수렴(정점 후 하락으로 조기종료)",
+  "history": [
+    {
+      "epoch": 1,
+      "phase": "head",
+      "train_loss": 1.0508172027575664,
+      "val_metric": 0.2847869164615268,
+      "lr": 0.001,
+      "seconds": 118.55925869941711,
+      "is_best": true
+    },
+    {
+      "epoch": 2,
+      "phase": "head",
+      "train_loss": 1.0477847666312488,
+      "val_metric": 0.2903057553866981,
+      "lr": 0.0007624999999999999,
+      "seconds": 114.64143133163452,
+      "is_best": true
+    },
+    {
+      "epoch": 3,
+      "phase": "head",
+      "train_loss": 1.0437646977412396,
+      "val_metric": 0.2918040462454988,
+      "lr": 0.0002875000000000001,
+      "seconds": 116.72771143913269,
+      "is_best": true
+    },
+    {
+      "epoch": 4,
+      "phase": "full",
+      "train_loss": 1.0535983191086695,
+      "val_metric": 0.2863888840031301,
+      "lr": 0.0003,
+      "seconds": 119.24911642074585,
+      "is_best": false
+    },
+    {
+      "epoch": 5,
+      "phase": "full",
+      "train_loss": 1.0444101063104776,
+      "val_metric": 0.29368305142376705,
+      "lr": 0.00029948664211731,
+      "seconds": 119.1788399219513,
+      "is_best": true
+    },
+    {
+      "epoch": 6,
+      "phase": "full",
+      "train_loss": 1.0404196956218816,
+      "val_metric": 0.2951770471390822,
+      "lr": 0.00029795026722454843,
+      "seconds": 116.25185322761536,
+      "is_best": true
+    },
+    {
+      "epoch": 7,
+      "phase": "full",
+      "train_loss": 1.0350269025717027,
+      "val_metric": 0.31160453937552407,
+      "lr": 0.0002954019449380236,
+      "seconds": 118.97212862968445,
+      "is_best": true
+    },
+    {
+      "epoch": 8,
+      "phase": "full",
+      "train_loss": 1.028183351418911,
+      "val_metric": 0.2931259625394653,
+      "lr": 0.0002918600359782045,
+      "seconds": 123.12400102615356,
+      "is_best": false
+    },
+    {
+      "epoch": 9,
+      "phase": "full",
+      "train_loss": 1.023189133558518,
+      "val_metric": 0.3027510587641286,
+      "lr": 0.00028735005988030933,
+      "seconds": 120.10730791091919,
+      "is_best": false
+    },
+    {
+      "epoch": 10,
+      "phase": "full",
+      "train_loss": 1.0121705279900477,
+      "val_metric": 0.30504429720308013,
+      "lr": 0.0002819045111254693,
+      "seconds": 121.71491384506226,
+      "is_best": false
+    },
+    {
+      "epoch": 11,
+      "phase": "full",
+      "train_loss": 1.0039051589293357,
+      "val_metric": 0.31249933174369193,
+      "lr": 0.00027556262501724746,
+      "seconds": 122.34276604652405,
+      "is_best": true
+    },
+    {
+      "epoch": 12,
+      "phase": "full",
+      "train_loss": 0.9829136810241601,
+      "val_metric": 0.305816036614921,
+      "lr": 0.0002683700949903776,
+      "seconds": 125.79780602455139,
+      "is_best": false
+    },
+    {
+      "epoch": 13,
+      "phase": "full",
+      "train_loss": 0.962388803714361,
+      "val_metric": 0.30226717652916624,
+      "lr": 0.00026037874338851976,
+      "seconds": 126.23717999458313,
+      "is_best": false
+    },
+    {
+      "epoch": 14,
+      "phase": "full",
+      "train_loss": 0.9249725318872012,
+      "val_metric": 0.30077013963464594,
+      "lr": 0.0002516461480830866,
+      "seconds": 124.24640488624573,
+      "is_best": false
+    },
+    {
+      "epoch": 15,
+      "phase": "full",
+      "train_loss": 0.8860801760966961,
+      "val_metric": 0.29439595299616594,
+      "lr": 0.00024223522762336085,
+      "seconds": 126.80700349807739,
+      "is_best": false
+    },
+    {
+      "epoch": 16,
+      "phase": "full",
+      "train_loss": 0.8406471993678656,
+      "val_metric": 0.2976255999041071,
+      "lr": 0.0002322137879069055,
+      "seconds": 124.72534656524658,
+      "is_best": false
+    },
+    {
+      "epoch": 17,
+      "phase": "full",
+      "train_loss": 0.7847783327102661,
+      "val_metric": 0.28956958764644286,
+      "lr": 0.0002216540336365184,
+      "seconds": 121.73851585388184,
+      "is_best": false
+    },
+    {
+      "epoch": 18,
+      "phase": "full",
+      "train_loss": 0.7321529454909839,
+      "val_metric": 0.287791694169211,
+      "lr": 0.00021063204808369397,
+      "seconds": 123.5964732170105,
+      "is_best": false
+    },
+    {
+      "epoch": 19,
+      "phase": "full",
+      "train_loss": 0.6802826782067617,
+      "val_metric": 0.2878703533262086,
+      "lr": 0.00019922724490690843,
+      "seconds": 122.28360843658447,
+      "is_best": false
+    }
+  ],
+  "elapsed_sec": 2326.7,
+  "note": "val 로만 평가. test 는 최종 조합 확인 때 run_phase2.py 로 1회만 본다."
+}
