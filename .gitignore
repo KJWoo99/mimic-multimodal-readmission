@@ -1,0 +1,118 @@
+# =====================================================================
+# PhysioNet DUA 차단 규칙: 절대 완화하지 말 것
+# Credentialed Health Data License 1.5.0
+#   - 데이터 및 파생물(derived data)의 공개 저장소 재배포 금지
+#   - 전처리 CSV, 크롭 이미지, Grad-CAM 오버레이 PNG 전부 파생물에 해당
+# 이 파일이 뚫리면 되돌릴 수 없다. 백스톱으로 .git/hooks/pre-commit 도 있음.
+# =====================================================================
+
+# --- 데이터 디렉터리 전체 (최우선) ---
+data/
+!data/.gitkeep
+!data/**/.gitkeep
+
+# --- 학습 산출물 ---
+outputs/models/
+experiments/mlruns/
+experiments/artifacts/
+experiments/**/artifacts/
+experiments/mlflow.db
+experiments/mlflow.db-*
+*.pt
+*.pth
+*.onnx
+*.engine
+*.ckpt
+*.safetensors
+
+# --- MIMIC 원본 파일 패턴 (경로 무관 전역 차단) ---
+*.csv
+*.csv.gz
+*.parquet
+*.dcm
+*.jpg
+*.jpeg
+*.png
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.db
+*.sqlite
+*.sqlite3
+IMAGE_FILENAMES
+cxr-record-list*
+cxr-study-list*
+mimic-cxr-*
+admissions*
+patients*
+labevents*
+prescriptions*
+diagnoses_icd*
+
+# --- 이 저장소 고유: 환자, 검사 ID 가 경로에 노출되는 다운로드 목록 (DUA 파생 데이터) ---
+# 경로의 p10000032 는 subject_id, s56699142 는 study_id 다. 이 목록은 곧
+# "어떤 환자가 코호트에 포함됐는지"의 명단이며 PhysioNet DUA 가 금지하는 파생 데이터다.
+# phase2_urls.txt / phase2_download_list.txt / phase2_download_list_original.txt /
+# missing_urls.txt / phase2_unavailable_images.json: 내용을 직접 확인함.
+outputs/*urls*.txt
+outputs/*download_list*.txt
+outputs/phase2_unavailable_images.json
+
+# --- 예외: 공개 가능한 집계 결과만 화이트리스트로 되살림 ---
+# (추가 시 반드시 내용 확인 후 - 환자 단위 정보가 없어야 함)
+!outputs/reports/*.md
+!docs/**/*.png
+
+# --- 도구 캐시 ---
+.ruff_cache/
+.pytest_cache/
+
+# --- 자격증명 ---
+.env
+.netrc
+*_password*
+*credential*
+.physionet*
+
+# --- 파이썬 ---
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+*.egg-info/
+.venv/
+venv/
+
+# --- 에디터/OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- 도구, 실행 부산물 ---
+# .coverage 는 pytest 커버리지 SQLite DB 로, 절대경로가 박혀 있고 실행마다 바뀐다.
+.coverage
+.coverage.*
+htmlcov/
+# 에디터 플러그인이 남기는 런타임 상태: 프로젝트 내용이 아니다.
+.bkit/
+
+# 재실행 대조용 임시 백업
+outputs/_before_*/
+# 대시보드는 run_phase5.py 가 '로컬 전용'으로 선언한 산출물이다. 내용은
+# 커밋되는 지표 JSON 과 같지만, 선언과 저장소 상태가 어긋나면 안 되므로 막는다.
+# 필요하면 python scripts/run_phase5.py 로 몇 분 만에 다시 만든다.
+outputs/dashboard.html
+# 실행 로그: 커밋하지 않는다.
+# 로그의 내용은 전부 지표 JSON 에 들어 있고(경고까지 shap_suspect_in_top5 같은
+# 필드로 남는다), JSON 은 테스트가 README 와 대조해 낡지 않게 지킨다. 로그는
+# 같은 숫자의 세 번째 사본이면서 그 장치가 없어, 재실행 후 조용히 낡는다.
+# '실제로 돌렸다'는 증거는 JSON 의 seed, 체크포인트 sha256, 소요시간이 담당한다.
+outputs/*_rerun.log
+outputs/*_run.log
+# 옛 산출물 보관은 폴더뿐 아니라 파일로도 남는다
+outputs/_before_*
+
+# 실행 로그는 올리지 않는다. 수치는 결과 JSON 에 있고, 로그에는 서버 경로와 경고가
+# 섞여 있다. 문서가 이름으로 가리키는 로그는 없다. 로그는 서버에 남긴다.
+*.log

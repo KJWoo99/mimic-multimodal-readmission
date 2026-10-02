@@ -1,0 +1,127 @@
+#!/bin/sh
+# =====================================================================
+# PhysioNet DUA 백스톱: .gitignore가 뚫렸을 때의 마지막 방어선
+# 차단 대상: data/ 이하 전체 / 대용량 파일 / MIMIC 데이터 확장자 / 자격증명
+# 우회는 --no-verify 뿐이며, 그건 DUA 위반을 의도한 행위다.
+#
+# 이 파일이 원본이다. .git/hooks/ 에 반영하려면:
+#   sh scripts/install_hooks.sh
+# =====================================================================
+
+RED=$(printf '\033[31m'); YEL=$(printf '\033[33m'); OFF=$(printf '\033[0m')
+FAIL=0
+MAXBYTES=$((20 * 1024 * 1024))   # 20MB
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM)
+[ -z "$STAGED" ] && exit 0
+
+# --- 1. data/ 이하 전면 차단 ---
+HITS=$(printf '%s\n' "$STAGED" | grep -E '^data/' | grep -v '\.gitkeep$')
+if [ -n "$HITS" ]; then
+  echo "${RED}[BLOCKED] data/ 이하 파일은 커밋할 수 없습니다 (PhysioNet DUA).${OFF}"
+  printf '%s\n' "$HITS" | sed 's/^/    /'
+  FAIL=1
+fi
+
+# --- 2. 데이터 확장자 전역 차단 ---
+EXT=$(printf '%s\n' "$STAGED" | grep -Ei '\.(csv|csv\.gz|parquet|dcm|npy|npz|h5|hdf5|db|sqlite3?|pt|pth|onnx|ckpt|safetensors)$')
+if [ -n "$EXT" ]; then
+  echo "${RED}[BLOCKED] 데이터/모델 파일 확장자가 스테이징되었습니다.${OFF}"
+  printf '%s\n' "$EXT" | sed 's/^/    /'
+  FAIL=1
+fi
+
+# --- 3. 환자 영상 가능성이 있는 이미지 (docs/ 밖) ---
+IMG=$(printf '%s\n' "$STAGED" | grep -Ei '\.(jpg|jpeg|png|tif|tiff|bmp)$' | grep -v '^docs/')
+if [ -n "$IMG" ]; then
+  echo "${RED}[BLOCKED] docs/ 밖 이미지 파일. 환자 영상/Grad-CAM 오버레이는 공개 불가.${OFF}"
+  echo "${YEL}          공개 데이터(PneumoniaMNIST 등) 예시라면 docs/ 아래로 옮기세요.${OFF}"
+  printf '%s\n' "$IMG" | sed 's/^/    /'
+  FAIL=1
+fi
+
+# --- 4. 대용량 파일 ---
+for f in $STAGED; do
+  [ -f "$f" ] || continue
+  SZ=$(wc -c < "$f" 2>/dev/null || echo 0)
+  if [ "$SZ" -gt "$MAXBYTES" ]; then
+    echo "${RED}[BLOCKED] 20MB 초과: $f ($((SZ / 1024 / 1024))MB)${OFF}"
+    FAIL=1
+  fi
+done
+
+# --- 5. 하드코딩된 자격증명 ---
+#
+# 주의: `--ask-password` 는 안전한 패턴이므로 잡지 않는다.
+#       wget이 실행 시점에 비밀번호를 물어보는 방식이라 파일에 남지 않는다.
+#       위험한 것은 값을 실제로 박아넣는 경우다.
+#       `--password="$PW"` 처럼 실행 때 입력받은 변수를 넘기는 것도 파일에 값이 남지 않으므로 잡지 않는다.
+#
+# 훅 자신과 검증 스크립트는 패턴 문자열을 포함하므로 스캔에서 제외한다.
+SCAN=$(printf '%s\n' "$STAGED" | grep -v '^scripts/hooks/' | grep -v '^scripts/verify_hooks\.sh$')
+if [ -n "$SCAN" ]; then
+  CRED=$(git diff --cached -U0 -- $SCAN 2>/dev/null | grep -nEi \
+    -e '^\+.*--password[= ]["'"'"']?[^"'"'"'$[:space:]]' \
+    -e '^\+.*(password|passwd|secret|token|api[_-]?key)[[:space:]]*[:=][[:space:]]*["'"'"'][^"'"'"'$][^"'"'"']{2,}' \
+    -e '^\+.*https?://[^/[:space:]]+:[^/@[:space:]]+@')
+  if [ -n "$CRED" ]; then
+    echo "${RED}[BLOCKED] 하드코딩된 자격증명으로 보이는 문자열이 있습니다.${OFF}"
+    printf '%s\n' "$CRED" | head -5 | sed 's/^/    /'
+    echo "${YEL}          비밀번호는 --ask-password 로 실행 시 입력받으세요.${OFF}"
+    FAIL=1
+  fi
+fi
+
+# --- 6. 파일 안의 MIMIC 식별자와 노트 원문 모양 ---
+#
+# 1~4 는 파일 이름, 확장자, 크기만 보므로 로그 등에 섞인 식별자 값이나 모델 응답 조각은 못 잡는다.
+# 스테이징된 내용을 줄 단위로 본다.
+#   식별자   : note_id 꼴(8자리-DS 또는 RR-번호), subject_id, hadm_id, stay_id, note_id 뒤의 8자리 숫자. 예외 없음
+#   원문 모양: 처방 줄(mg, PO, PO, Q8H, PUFF, IH)과 노트 머리(Brief Hospital Course, Admission Date, Name 뒤 ___)
+# 원문 모양은 파서 테스트의 흔한 처방 예시에도 걸린다. 퇴원기록 전체와 대조해 특정 노트를 옮긴 문장이
+# 아님을 확인한 줄만 scripts/note_example_allow.txt 에 줄 해시(sha256)로 올려 통과시킨다. 문장 자체는
+# 그 파일에 넣지 않는다. 걸린 줄을 고치면 해시가 바뀌므로 다시 대조해 목록을 갱신해야 통과한다.
+# 걸린 줄의 내용은 찍지 않는다(파일과 줄 번호만).
+# 패턴 문자열은 [ ] 로 공백을 적는다. 그대로 적으면 이 파일 자체가 검사 도구에 원문 모양으로 걸린다.
+ID_PAT='(^|[^0-9])[0-9]{8}-(DS|RR)-[0-9]+([^0-9]|$)|(subject_id|hadm_id|stay_id|note_id)"?[[:space:]]*[:=,]?[[:space:]]*"?[0-9]{8}([^0-9]|$)'
+NOTE_PAT='PO[ ]Q[0-9]+H|mg[ ]PO[ ]|PUFF[ ]IH|Brief[ ]Hospital[ ]Course:|Name:[[:space:]]+___|Admission[ ]Date:'
+ROOT_DIR=$(git rev-parse --show-toplevel)
+ALLOW="$ROOT_DIR/scripts/note_example_allow.txt"
+if [ -n "$SCAN" ]; then
+  IDHITS=""
+  NOTEHITS=""
+  for f in $SCAN; do
+    git cat-file -e ":$f" 2>/dev/null || continue
+    ids=$(git show ":$f" | grep -InEi "$ID_PAT" | cut -d: -f1 | tr '\n' ' ')
+    [ -n "$ids" ] && IDHITS="${IDHITS}    $f 줄 $ids
+"
+    notes=$(git show ":$f" | grep -InE "$NOTE_PAT" | grep -vF '구조만 옮긴 예시' | while IFS= read -r hit; do
+      ln=${hit%%:*}
+      body=${hit#*:}
+      sum=$(printf '%s' "$body" | sha256sum | cut -c1-64)
+      grep -qx "$sum" "$ALLOW" 2>/dev/null || printf '%s ' "$ln"
+    done)
+    [ -n "$notes" ] && NOTEHITS="${NOTEHITS}    $f 줄 $notes
+"
+  done
+  if [ -n "$IDHITS" ]; then
+    echo "${RED}[BLOCKED] MIMIC 식별자 값으로 보이는 문자열이 있습니다 (값은 표시하지 않음).${OFF}"
+    printf '%s' "$IDHITS"
+    FAIL=1
+  fi
+  if [ -n "$NOTEHITS" ]; then
+    echo "${RED}[BLOCKED] 노트 원문 모양의 줄이 허용 목록에 없습니다 (내용은 표시하지 않음).${OFF}"
+    printf '%s' "$NOTEHITS"
+    echo "${YEL}          실제 노트를 옮긴 문장이 아닌지 대조한 뒤 scripts/note_example_allow.txt 를 갱신하세요.${OFF}"
+    FAIL=1
+  fi
+fi
+
+if [ "$FAIL" -ne 0 ]; then
+  echo ""
+  echo "${YEL}커밋이 차단되었습니다. 의료데이터, 파생물은 절대 공개 저장소에 올리지 않습니다.${OFF}"
+  echo "${YEL}참고: PhysioNet DUA: 원문, 파생 데이터는 외부로 내보내지 않는다${OFF}"
+  exit 1
+fi
+
+exit 0

@@ -1,0 +1,28 @@
+# 줄바꿈은 LF 로 통일한다. 윈도에서 커밋해도 저장소에는 LF 로 들어간다.
+* text=auto eol=lf
+# 셸 스크립트와 git 훅은 CRLF 면 리눅스에서 `bash\r` 오류로 실행이 깨진다.
+*.sh text eol=lf
+scripts/hooks/* text eol=lf
+# 바이너리는 줄바꿈을 건드리지 않는다. git 의 자동 판정은 PDF 를 텍스트로 보기도 하는데,
+# 그러면 CRLF 바이트가 LF 로 바뀌어 파일이 깨진다.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.gz binary
+*.tar binary
+*.zip binary
+*.pth binary
+*.pt binary
+*.onnx binary
+*.plan binary
+*.engine binary
+*.npz binary
+*.npy binary
+*.parquet binary
+*.db binary
+*.sqlite binary
+*.pkl binary
+*.safetensors binary
+*.nii binary
