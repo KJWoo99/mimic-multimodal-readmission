@@ -1,0 +1,23 @@
+{
+  "what": "feature 와 라벨이 무관한 합성 데이터. 누수가 없는 모델의 AUC 는 0.5 여야 한다",
+  "n_trials": 30,
+  "seeds": [
+    0,
+    29
+  ],
+  "n_patients": 300,
+  "visits_per_patient": 3,
+  "positive_rate": 0.12,
+  "leaky": {
+    "auc_mean": 0.5722377147103511,
+    "auc_std": 0.04508349667901713,
+    "above_half": 29
+  },
+  "fixed": {
+    "auc_mean": 0.5051127032146125,
+    "auc_std": 0.08605791896104682,
+    "above_half": 16
+  },
+  "inflation_auc": 0.06712501149573857,
+  "verdict": "분리 앞 전처리는 신호가 없는 데이터에서도 점수를 올린다"
+}
