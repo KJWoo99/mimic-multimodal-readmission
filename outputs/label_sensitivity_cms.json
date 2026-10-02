@@ -1,0 +1,92 @@
+{
+  "definition_diff": {
+    "n_index": 415231,
+    "n_positive": 79509,
+    "positive_next_is_observation": 32357,
+    "index_transfer_acute_hospital": 2144,
+    "index_against_advice": 2588,
+    "discharge_died_without_death_record": 203,
+    "discharge_died_with_deathtime_or_flag": 0,
+    "discharge_died_next_admission_within_30d": 13,
+    "discharge_died_readmit_30d_label": 13
+  },
+  "phase1": {
+    "main": {
+      "n_index": 415231,
+      "readmit_rate": 0.19148136820227776,
+      "n_pos": 79509,
+      "test_auroc": 0.7075405228223531,
+      "test_pr_auc": 0.383216627771085,
+      "n_features": 42
+    },
+    "obs_both": {
+      "n_index": 282818,
+      "readmit_rate": 0.13914248739472027,
+      "n_pos": 39352,
+      "test_auroc": 0.7190329025353265,
+      "test_pr_auc": 0.303037843577698,
+      "n_features": 42
+    },
+    "cms": {
+      "n_index": 279388,
+      "readmit_rate": 0.13256474866493909,
+      "n_pos": 37037,
+      "test_auroc": 0.7236881337475622,
+      "test_pr_auc": 0.3180011806508677,
+      "n_features": 42
+    }
+  },
+  "exclusions": {
+    "obs_excluded_index": 132413,
+    "transfer_ama_excluded_index": 3430,
+    "same_day_not_counted": 1468
+  },
+  "fusion": {
+    "cnn_main": {
+      "n_train": 24920,
+      "n_test": 7168,
+      "pos_rate_test": 0.25362723214285715,
+      "ehr_only": 0.6597009140166353,
+      "fusion_pca": 0.6358973607641139,
+      "fusion_raw": 0.627509536000329,
+      "fusion_late": 0.6443682078488223,
+      "best_lift": -0.015332706167813015,
+      "verdict": "영상이 보태지 않는다"
+    },
+    "cnn_cms": {
+      "n_train": 20510,
+      "n_test": 5878,
+      "pos_rate_test": 0.1966655324940456,
+      "ehr_only": 0.6710042003197871,
+      "fusion_pca": 0.6564201433619266,
+      "fusion_raw": 0.6365539021498426,
+      "fusion_late": 0.6633411081750885,
+      "best_lift": -0.007663092144698624,
+      "verdict": "영상이 보태지 않는다"
+    },
+    "raddino_main": {
+      "n_train": 24920,
+      "n_test": 7168,
+      "pos_rate_test": 0.25362723214285715,
+      "ehr_only": 0.6597009140166353,
+      "fusion_pca": 0.660204651306252,
+      "fusion_raw": 0.6611243227126451,
+      "fusion_late": 0.6598988824116055,
+      "best_lift": 0.0014234086960097647,
+      "verdict": "영상이 보태지 않는다"
+    },
+    "raddino_cms": {
+      "n_train": 20510,
+      "n_test": 5878,
+      "pos_rate_test": 0.1966655324940456,
+      "ehr_only": 0.6710042003197871,
+      "fusion_pca": 0.6733453546602886,
+      "fusion_raw": 0.66569133072169,
+      "fusion_late": 0.6723435468813432,
+      "best_lift": 0.002341154340501417,
+      "verdict": "영상이 보태지 않는다"
+    }
+  },
+  "lift_threshold": 0.02,
+  "seed": 42
+}
