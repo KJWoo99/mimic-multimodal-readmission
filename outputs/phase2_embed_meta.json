@@ -1,0 +1,11 @@
+{
+  "phase": "2-B",
+  "n_admissions": 35599,
+  "embedding_dim": 1024,
+  "model": "densenet121",
+  "img_size": 384,
+  "tag": "",
+  "source_metrics": "phase2_metrics.json",
+  "checkpoint_sha256": "6797a924d2c30d1ad0775230cb740476f9e17eb38603c97002014b53267a5af9",
+  "elapsed_sec": 138.8
+}
