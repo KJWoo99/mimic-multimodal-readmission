@@ -1,0 +1,84 @@
+{
+  "phase": "1",
+  "seed": 42,
+  "model": "xgboost",
+  "cohort": {
+    "n_admissions": 415231,
+    "n_subjects": 181595,
+    "readmit_rate": 0.19148136820227776,
+    "n_positive": 79509,
+    "n_censored_last_admission": 161481,
+    "readmit_rate_excl_censored": 0.313335960591133,
+    "admissions_per_subject": 2.29
+  },
+  "flow": [
+    {
+      "step": "원본 admissions",
+      "n_admissions": 546028,
+      "n_subjects": 223452
+    },
+    {
+      "step": "성인 18세 이상",
+      "n_admissions": 546028,
+      "n_subjects": 223452
+    },
+    {
+      "step": "퇴원≤입원 오류 제거(180건)",
+      "n_admissions": 545848,
+      "n_subjects": 223380
+    },
+    {
+      "step": "재원 1.0일 이상",
+      "n_admissions": 425216,
+      "n_subjects": 186103
+    },
+    {
+      "step": "원내 사망 제외",
+      "n_admissions": 415231,
+      "n_subjects": 181595
+    },
+    {
+      "step": "최종 코호트",
+      "n_admissions": 415231,
+      "n_subjects": 181595
+    }
+  ],
+  "split": {
+    "n_train": 290781,
+    "n_val": 41287,
+    "n_test": 83163,
+    "n_subjects_train": 127116,
+    "pos_rate_train": 0.19154965420711806,
+    "n_subjects_val": 18160,
+    "pos_rate_val": 0.18817061060382204,
+    "n_subjects_test": 36319,
+    "pos_rate_test": 0.19288625951444754
+  },
+  "n_features": 33,
+  "scale_pos_weight": 4.2206,
+  "test": {
+    "n": 83163,
+    "n_pos": 16041,
+    "pos_rate": 0.19288625951444754,
+    "auroc": 0.7039820295011776,
+    "pr_auc": 0.3799899874727162,
+    "brier": 0.21643893255659113,
+    "ece": 0.2679533473720423,
+    "pr_auc_baseline": 0.19288625951444754,
+    "eer": 0.35042554063061804,
+    "eer_threshold": 0.49008578062057495
+  },
+  "test_warnings": [],
+  "subgroup_sex": {
+    "F": {
+      "n": 44137,
+      "auroc": 0.7044176569166023,
+      "ece": 0.2618242466770063
+    },
+    "M": {
+      "n": 39026,
+      "auroc": 0.7010339299012793,
+      "ece": 0.27488513944339993
+    }
+  }
+}
