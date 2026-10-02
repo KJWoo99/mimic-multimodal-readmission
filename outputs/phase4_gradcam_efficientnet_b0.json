@@ -1,0 +1,42 @@
+{
+  "phase": "4-B",
+  "n": 300,
+  "img_size": 384,
+  "checkpoint_sha256": "36d0df436a445a22384f80e70cf079e29ed23e953580b9b736fa77f4be383882",
+  "center_fraction": 0.6,
+  "center_mass_uniform_expected": 0.36,
+  "center_mass": {
+    "mean": 0.3135130547558963,
+    "std": 0.14882175188048113,
+    "p25": 0.19669283157979162,
+    "p75": 0.41012704972753866
+  },
+  "attention_entropy": {
+    "mean": 0.9146801021919434,
+    "std": 0.025099171442074873
+  },
+  "peak_radius": {
+    "mean": 0.8654176176287319,
+    "std": 0.26264138557374606
+  },
+  "verdict_location": "균등 주의와 구분되지 않는다",
+  "verdict_focus": "주의가 퍼져 있다",
+  "by_view": {
+    "AP": {
+      "n": 177,
+      "center_mass": 0.33283074346565095,
+      "entropy": 0.9196855511761606
+    },
+    "PA": {
+      "n": 97,
+      "center_mass": 0.2651328099680578,
+      "entropy": 0.9046238771970472
+    },
+    "UNKNOWN": {
+      "n": 20,
+      "center_mass": 0.35817465673479826,
+      "entropy": 0.9227498836130212
+    }
+  },
+  "view_center_mass_gap": 0.09304184676674043
+}
