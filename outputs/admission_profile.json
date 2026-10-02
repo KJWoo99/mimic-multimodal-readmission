@@ -1,0 +1,24 @@
+{
+  "all_admissions": {
+    "n_admissions": 546028,
+    "n_subjects": 223452,
+    "admissions_per_subject_mean": 2.4436,
+    "admissions_per_subject_median": 1.0,
+    "admissions_per_subject_max": 238,
+    "single_admission_subject_pct": 55.2,
+    "top1pct_subjects_admission_share_pct": 10.9,
+    "in_hospital_death_pct": 2.16,
+    "los_under_1day_pct": 22.1
+  },
+  "main_cohort": {
+    "n_admissions": 415231,
+    "n_subjects": 181595,
+    "admissions_per_subject_mean": 2.2866,
+    "admissions_per_subject_median": 1.0,
+    "admissions_per_subject_max": 95,
+    "single_admission_subject_pct": 56.5,
+    "top1pct_subjects_admission_share_pct": 9.9,
+    "in_hospital_death_pct": 0.0,
+    "los_under_1day_pct": 0.0
+  }
+}
