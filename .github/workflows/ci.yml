@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      # CPU 빌드로 충분하다. 테스트는 GPU 를 요구하지 않는다
+      # (학습 루프는 로컬에서만 돌리고, CI 는 누수 차단, 지표 정확성을 지킨다).
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch==2.14.0+cpu torchvision==0.29.0+cpu --index-url https://download.pytorch.org/whl/cpu
+          # 버전을 고정한다. 고정하지 않으면 CI 가 environment.yml 과 다른 버전으로
+          # 검사해, 통과가 이 환경에서의 통과를 보장하지 않는다(ruff 는 버전에 따라
+          # 규칙이 달라진다). 값은 environment.yml 과 같게 유지할 것.
+          pip install numpy==2.5.2 pandas==3.0.5 scipy==1.18.0 \
+                      scikit-learn==1.9.0 xgboost==3.4.0 lightgbm==4.7.0 \
+                      imbalanced-learn==0.14.2 shap==0.52.0 statsmodels==0.14.6 \
+                      pyarrow==25.0.1 pydicom==3.0.2 mlflow==3.16.0 \
+                      matplotlib==3.11.1 seaborn==0.13.2 tqdm==4.70.0 \
+                      pytest==9.1.1 ruff==0.9.4
+
+      - name: Ruff lint
+        run: ruff check src scripts tests
+
+      - name: Pytest
+        run: pytest -q
+
+  # 데이터가 저장소에 새어 들어가지 않았는지 매 push 마다 확인한다.
+  # pre-commit 훅은 로컬 전용이라 clone 환경에서는 동작하지 않으므로,
+  # 원격에서도 같은 검사를 한 번 더 건다(README 의 데이터 공개 방침, PhysioNet DUA).
+  dua-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 추적 중인 데이터 파일 검사
+        run: |
+          set -e
+          echo "== 데이터/모델 확장자 =="
+          if git ls-files | grep -Ei '\.(csv|csv\.gz|parquet|dcm|npy|npz|h5|hdf5|db|sqlite3?|pt|pth|onnx|ckpt|safetensors)$'; then
+            echo "::error::데이터/모델 파일이 저장소에 추적되고 있습니다 (PhysioNet DUA 위반)"
+            exit 1
+          fi
+          echo "  없음"
+
+          echo "== data/ 이하 =="
+          if git ls-files | grep -E '^data/' | grep -v '\.gitkeep$'; then
+            echo "::error::data/ 이하 파일이 추적되고 있습니다"
+            exit 1
+          fi
+          echo "  없음"
+
+          echo "== 히스토리 전체 (한 번이라도 커밋된 적 있는가) =="
+          if git log --all --name-only --pretty=format: \
+             | sort -u | grep -Ev '^$' \
+             | grep -Ei '\.(csv|parquet|dcm|npy|npz|h5|hdf5)$|^data/'; then
+            echo "::error::과거 커밋에 데이터 파일이 존재합니다. 히스토리 정리가 필요합니다"
+            exit 1
+          fi
+          echo "  없음"
+
+      - name: 20MB 초과 파일 검사
+        run: |
+          big=$(git ls-files | xargs -r -I{} sh -c 'test -f "{}" && find "{}" -size +20M' | head)
+          if [ -n "$big" ]; then
+            echo "$big"
+            echo "::error::20MB 초과 파일이 추적되고 있습니다"
+            exit 1
+          fi
+          echo "  없음"

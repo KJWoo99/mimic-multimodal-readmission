@@ -1,0 +1,65 @@
+# pip 전용 설치 경로 (conda 없이 쓸 때)
+#   python -m venv .venv && .venv/Scripts/activate
+#   pip install -r requirements.txt
+#
+# conda를 쓴다면 environment.yml 을 권장한다.
+# 버전은 설치 시점의 최신으로 고정. Python 3.13 기준.
+
+--index-url https://download.pytorch.org/whl/cu132
+--extra-index-url https://pypi.org/simple
+
+# PyTorch (CUDA 13.2): 다른 CUDA면 위 index-url 을 바꿀 것
+torch==2.14.0+cu132
+torchvision==0.29.0+cu132
+
+# 영상 로딩: cxr_dataset.py 가 최상단에서 임포트한다(Phase 2 필수).
+# 비식별화 검사(deid.py)의 픽셀, EXIF 확인도 이걸 쓴다.
+pillow==12.3.0
+
+# 수치, 데이터
+numpy==2.5.2
+pandas==3.0.5
+scipy==1.18.0
+pyarrow==25.0.1
+
+# 모델링
+scikit-learn==1.9.0
+xgboost==3.4.0
+lightgbm==4.7.0
+imbalanced-learn==0.14.2
+statsmodels==0.14.6
+
+# 설명가능성
+shap==0.52.0
+
+# 의료영상
+pydicom==3.0.2
+albumentations==2.0.8
+opencv-python-headless==5.0.0.93
+
+# 저선량 모사와 복원(scripts/run_lowdose.py): 잡음 추정, SSIM, 비국소 평균, BM3D
+scikit-image==0.26.0
+bm3d==4.0.3
+bm4d==4.2.5
+PyWavelets==1.10.0
+
+# 실험 추적 (로컬 sqlite 백엔드 전용: DUA)
+mlflow==3.16.0
+
+# 시각화, 유틸
+matplotlib==3.11.1
+seaborn==0.13.2
+tqdm==4.70.0
+
+# Phase 0 배관 검증용 공개 데이터 (PneumoniaMNIST, CC BY 4.0)
+medmnist==3.0.2
+
+# 흉부X선 파운데이션 모델 (Phase 2-C): microsoft/rad-dino 를 불러온다.
+# 가중치는 MIT 라이선스, HuggingFace 캐시로 받으며 저장소에 넣지 않는다.
+transformers==5.15.1
+
+# 테스트
+pytest==9.1.1
+# 선언끼리 모순되는지 검사할 때 버전 조건을 파싱한다
+packaging==26.3
+ruff==0.9.4

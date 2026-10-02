@@ -1,0 +1,87 @@
+# conda 환경 정의: 이 프로젝트 전용
+#
+#   conda env create -f environment.yml
+#   conda activate mimic
+#
+# torch는 CUDA 빌드가 PyPI 기본 인덱스에 없어 별도 인덱스에서 받는다.
+# GPU: NVIDIA RTX 4090 (VRAM 24GB) / CUDA 13.2 기준.
+# 다른 CUDA 버전이면 https://pytorch.org/get-started/locally/ 에서 인덱스 URL을 바꿀 것.
+#
+# 버전은 설치 시점의 최신으로 고정했다. 재현성을 위해 상한이 아닌 정확한 버전을 쓴다.
+
+name: mimic
+
+channels:
+  - defaults
+
+dependencies:
+  - python=3.13
+  - pip
+  - pip:
+      # ── PyTorch (CUDA 13.2) ─────────────────────────────────────
+      - --index-url https://download.pytorch.org/whl/cu132
+      - torch==2.14.0+cu132
+      - torchvision==0.29.0+cu132
+
+      # ── 나머지는 PyPI 기본 인덱스 ────────────────────────────────
+      - --extra-index-url https://pypi.org/simple
+
+      # 수치, 데이터
+      - numpy==2.5.2
+      - pandas==3.0.5
+      - scipy==1.18.0
+      - pyarrow==25.0.1
+
+      # 모델링
+      - scikit-learn==1.9.0
+      - xgboost==3.4.0
+      - lightgbm==4.7.0
+      - imbalanced-learn==0.14.2
+      - statsmodels==0.14.6
+
+      # 흉부X선 파운데이션 모델 (Phase 2-C, microsoft/rad-dino)
+      - transformers==5.15.1
+
+      # 설명가능성
+      - shap==0.52.0
+
+      # 의료영상
+      - pydicom==3.0.2
+      - albumentations==2.0.8
+      - opencv-python-headless==5.0.0.93
+
+      # 저선량 모사와 복원(scripts/run_lowdose.py): 잡음 추정, SSIM, 비국소 평균, BM3D.
+      # bm3d 는 계산부를 bm4d 에 두고, bm4d 는 PyWavelets 를 요구한다.
+      - scikit-image==0.26.0
+      - bm3d==4.0.3
+      - bm4d==4.2.5
+      - PyWavelets==1.10.0
+
+      # 실험 추적 (로컬 sqlite 백엔드 전용: PhysioNet DUA)
+      - mlflow==3.16.0
+
+      # Phase 0 배관 검증용 공개 데이터 (PneumoniaMNIST, CC BY 4.0)
+      - medmnist==3.0.2
+
+      # 테스트
+      - pytest==9.1.1
+      # 선언끼리 모순되는지 검사할 때 버전 조건을 파싱한다
+      - packaging==26.3
+      # 린트. CI 와 같은 판이어야 같은 규칙으로 검사한다(.github/workflows/ci.yml)
+      - ruff==0.9.4
+
+      # 시각화, 유틸
+      - matplotlib==3.11.1
+      - seaborn==0.13.2
+      - tqdm==4.70.0
+
+# ── 알려진 경고 (무시해도 됨) ──────────────────────────────────────
+#
+# 1. (해소) mlflow 의 pandas 상한
+#    mlflow 3.15.1 은 pandas<3 을 요구해 pandas 3 과 함께 고정하면, 이 파일로 환경을 처음부터
+#    만들 때 ResolutionImpossible 로 설치가 실패한다. 3.16.0 이 상한을 pandas<4 로 풀었다.
+#    선언끼리 모순되는지는 `tests/test_dependency_declarations.py` 가 본다.
+#
+# 2. mlflow: "torch version contains a local version label (+cu132)"
+#    -> 모델 패키징 시 pip requirement에서 +cu132 가 떨어진다는 안내.
+#       이 프로젝트는 모델 서빙을 하지 않으므로 무관하다.

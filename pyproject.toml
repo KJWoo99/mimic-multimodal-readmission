@@ -1,0 +1,43 @@
+[project]
+name = "mimic-readmission"
+version = "0.1.0"
+description = "MIMIC-IV EHR + CXR 멀티모달 30일 재입원 예측: 신뢰성 검증 중심"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { file = "LICENSE" }
+authors = [{ name = "Jeongwoo Kwak" }]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # isort (import 정렬)
+    "B",    # flake8-bugbear (버그 유발 패턴)
+    "UP",   # pyupgrade
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff 고유 규칙
+]
+ignore = [
+    "UP038",   # isinstance(x, A | B) 강제: ruff v0.10(2025-03)에서 폐기, 제거된 규칙이다.
+               # 파이프 문법이 튜플보다 3배 느리고(500ns vs 160ns) 관용구도 아니다.
+               # 우리 ruff 가 0.9.4 라 아직 살아 있어 명시적으로 끈다.
+    "E501",    # 줄 길이는 formatter 가 다룬다
+    "B008",    # 기본값에서의 함수 호출 (FastAPI 등에서 정상 패턴)
+    "RUF001",  # 한글 주석의 전각 문자 오탐
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# 테스트는 assert 와 픽스처 재정의가 정상이다
+"tests/*" = ["B011"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --strict-markers"
