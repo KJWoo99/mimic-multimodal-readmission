@@ -1,0 +1,95 @@
+{
+ "n_images_downloaded": 41695,
+ "n_frontal": 33683,
+ "n_subjects": 22763,
+ "views": {
+  "AP": 23469,
+  "PA": 10214
+ },
+ "splits": {
+  "train": {
+   "images": 23427,
+   "subjects": 15933
+  },
+  "val": {
+   "images": 3389,
+   "subjects": 2277
+  },
+  "test": {
+   "images": 6867,
+   "subjects": 4553
+  }
+ },
+ "findings": {
+  "흉수": {
+   "train": {
+    "pos": 6624,
+    "uncertain": 695
+   },
+   "val": {
+    "pos": 959,
+    "uncertain": 103
+   },
+   "test": {
+    "pos": 1939,
+    "uncertain": 192
+   }
+  },
+  "심비대": {
+   "train": {
+    "pos": 6648,
+    "uncertain": 949
+   },
+   "val": {
+    "pos": 968,
+    "uncertain": 123
+   },
+   "test": {
+    "pos": 1951,
+    "uncertain": 264
+   }
+  },
+  "폐부종": {
+   "train": {
+    "pos": 2963,
+    "uncertain": 1466
+   },
+   "val": {
+    "pos": 419,
+    "uncertain": 235
+   },
+   "test": {
+    "pos": 882,
+    "uncertain": 437
+   }
+  },
+  "무기폐": {
+   "train": {
+    "pos": 6020,
+    "uncertain": 1182
+   },
+   "val": {
+    "pos": 884,
+    "uncertain": 155
+   },
+   "test": {
+    "pos": 1707,
+    "uncertain": 341
+   }
+  },
+  "기흉": {
+   "train": {
+    "pos": 929,
+    "uncertain": 112
+   },
+   "val": {
+    "pos": 131,
+    "uncertain": 14
+   },
+   "test": {
+    "pos": 269,
+    "uncertain": 33
+   }
+  }
+ }
+}

@@ -1,0 +1,7 @@
+{
+ "processor": "BitImageProcessor",
+ "n": 20,
+ "max_abs_diff": 0.01518237590789795,
+ "one_level": 0.015182224651378168,
+ "same": true
+}

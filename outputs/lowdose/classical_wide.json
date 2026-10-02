@@ -1,0 +1,27 @@
+{
+ "grid_name": "wide",
+ "factors": {
+  "r2": {
+   "gaussian": 0.25,
+   "nlm": 0.1,
+   "bm3d": 0.5
+  },
+  "r4": {
+   "gaussian": 0.25,
+   "nlm": 0.3,
+   "bm3d": 0.75
+  },
+  "r8": {
+   "gaussian": 0.35,
+   "nlm": 0.6,
+   "bm3d": 0.75
+  },
+  "r32": {
+   "gaussian": 0.35,
+   "nlm": 1.0,
+   "bm3d": 1.5
+  }
+ },
+ "n": 6867,
+ "seconds": 18659
+}

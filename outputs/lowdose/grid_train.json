@@ -1,0 +1,11 @@
+{
+ "split": "train",
+ "n": 23427,
+ "conds": [
+  "clean",
+  "r2",
+  "r4",
+  "r8"
+ ],
+ "seconds": 3008
+}
