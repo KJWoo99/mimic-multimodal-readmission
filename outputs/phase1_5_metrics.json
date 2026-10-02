@@ -1,0 +1,143 @@
+{
+  "phase": "1.5",
+  "cohort": {
+    "n_admissions": 415231,
+    "n_subjects": 181595,
+    "readmit_rate": 0.19148136820227776,
+    "n_positive": 79509,
+    "n_censored_last_admission": 161481,
+    "readmit_rate_excl_censored": 0.313335960591133,
+    "admissions_per_subject": 2.29
+  },
+  "linkage": {
+    "n_admissions": 415231,
+    "n_with_cxr": 35601,
+    "cxr_rate": 0.08573781822648116,
+    "n_studies_all": 95858,
+    "n_studies_used": 35601,
+    "n_subjects_with_cxr": 23660,
+    "n_cxr_median": 1.0,
+    "ap_rate": 0.7698379259009578
+  },
+  "readmit_by_cxr": {
+    "with_cxr": 0.24929075025982417,
+    "without_cxr": 0.18606011116086715
+  },
+  "mnar": {
+    "verdict": "MNAR 강함: 영상 유무가 결과와 실질적으로 연관됨 (RR=1.34 [1.31, 1.37])",
+    "verdict_adjusted": "재원일수 4분위 보정 RR=1.20 [1.17, 1.23] (Mantel-Haenszel, 환자 단위 부트스트랩)",
+    "cxr_rate": 0.08573781822648116,
+    "outcome_r": 0.04499257880100436,
+    "n_tests": 3,
+    "effect": {
+      "rate_exposed": 0.24929075025982417,
+      "rate_unexposed": 0.18606011116086715,
+      "risk_ratio": 1.3398398437174315,
+      "rr_ci_low": 1.314340551777638,
+      "rr_ci_high": 1.3658338429753178,
+      "odds_ratio": 1.4526916963325702,
+      "n_exposed": 35601.0,
+      "n_unexposed": 379630.0
+    },
+    "correlations": [
+      {
+        "variable": "los_days",
+        "r": 0.12702271793337624,
+        "p": 0.0,
+        "n": 415231,
+        "p_bonferroni": 0.0,
+        "abs_r": 0.12702271793337624
+      },
+      {
+        "variable": "readmit_30d",
+        "r": 0.04499257880100436,
+        "p": 5.3524589462989685e-185,
+        "n": 415231,
+        "p_bonferroni": 1.6057376838896906e-184,
+        "abs_r": 0.04499257880100436
+      },
+      {
+        "variable": "prior_admissions_12m",
+        "r": 0.02448170983638164,
+        "p": 4.413301147842551e-56,
+        "n": 415231,
+        "p_bonferroni": 1.3239903443527655e-55,
+        "abs_r": 0.02448170983638164
+      }
+    ],
+    "notes": [
+      "대규모 표본에서는 p값이 과민하므로 효과크기를 우선 본다. 다중검정에는 Bonferroni 보정을 적용했다.",
+      "점이연 상관 r 은 두 집단 크기가 크게 불균형하면 구조적으로 축소되므로 위험비(RR)를 함께 본다."
+    ],
+    "los_adjusted": {
+      "stratifier": "los_days 4분위",
+      "mh_risk_ratio": 1.2018201675460503,
+      "crude_risk_ratio": 1.3398398437174315,
+      "strata": [
+        {
+          "stratum": "Q1(단기)",
+          "n": 103822.0,
+          "exposure_rate": 0.036793743137292674,
+          "rate_exposed": 0.18010471204188483,
+          "rate_unexposed": 0.15305693886122276,
+          "risk_ratio": 1.17671706609255,
+          "rr_ci_low": 1.0980259540135333,
+          "rr_ci_high": 1.261047654267371
+        },
+        {
+          "stratum": "Q2",
+          "n": 103828.0,
+          "exposure_rate": 0.05241360711946681,
+          "rate_exposed": 0.1922087467842705,
+          "rate_unexposed": 0.16152704653101052,
+          "risk_ratio": 1.1899477574324966,
+          "rr_ci_low": 1.1248073167036161,
+          "rr_ci_high": 1.2588606460778686
+        },
+        {
+          "stratum": "Q3",
+          "n": 103780.0,
+          "exposure_rate": 0.09268645211023319,
+          "rate_exposed": 0.23588730637280383,
+          "rate_unexposed": 0.1954099892736908,
+          "risk_ratio": 1.2071404704005209,
+          "rr_ci_low": 1.1618601239881745,
+          "rr_ci_high": 1.2541854954767535
+        },
+        {
+          "stratum": "Q4(장기)",
+          "n": 103801.0,
+          "exposure_rate": 0.161077446267377,
+          "rate_exposed": 0.2913875598086124,
+          "rate_unexposed": 0.2415681951286733,
+          "risk_ratio": 1.206233128717141,
+          "rr_ci_low": 1.174798795564552,
+          "rr_ci_high": 1.2385085567912424
+        }
+      ],
+      "patient_bootstrap": {
+        "n_boot": 1000,
+        "seed": 20260924,
+        "ci_low": 1.1739612569383238,
+        "ci_high": 1.2278221534848117
+      }
+    },
+    "rr_patient_bootstrap": {
+      "n_boot": 1000,
+      "seed": 20260924,
+      "n_patients": 181595,
+      "admissions_per_patient": 2.2865772736033483,
+      "ci_low": 1.3083666242391447,
+      "ci_high": 1.3681675814348078
+    }
+  },
+  "download": {
+    "studies_requested": 35601,
+    "studies_found": 35601,
+    "files": 35601,
+    "frontal_first_applied": true,
+    "avg_kb": 1434.0,
+    "est_gb": 48.7,
+    "one_file_per_study": true
+  }
+}
